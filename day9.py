@@ -1,5 +1,4 @@
 import os
-import re
 
 
 def read_data(path):
