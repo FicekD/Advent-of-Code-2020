@@ -76,8 +76,10 @@ def main():
     print(sum([i*val for i, val in enumerate(reversed(player2), start=1)]))
 
     player1, player2 = decode_data(data)
-    _, p = game(player1, player2)
+    w, p = game(player1, player2)
+    print('Crab wins' if w == 'p1' else 'I defended my honor!')
     print(sum([i*val for i, val in enumerate(reversed(p), start=1)]))
+
 
 if __name__ == '__main__':
     main()
