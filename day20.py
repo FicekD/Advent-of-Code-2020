@@ -1,10 +1,6 @@
 import os
 import numpy as np
 
-###
-# Did not finish this one, bare backtracking algorithm is way way too slow and
-# I can't fugure out how to initialize the grid with found corners... GG
-###
 
 def read_data(path):
     with open(path, 'r') as file:
@@ -38,8 +34,6 @@ def eligible(piece, board, x, y, side, tile_size):
 def solve(board, ids, tiles, x, y, side, tile_size, rotate, flip):
     if side*side == np.sum(ids != 0):
         return True
-    if ids[0, 9] == 1973:
-        print('a')
     for key, tile in tiles.items():
         if key in ids:
             continue
@@ -53,11 +47,6 @@ def solve(board, ids, tiles, x, y, side, tile_size, rotate, flip):
                     ids[y, x] = key
                     x = (x+1) % side
                     y = y + (x == 0)
-                    if (x, y) in ((0, side-1), (side-1, side-1), (side-1, 0)):
-                        x = (x+1) % side
-                        y = y + (x == 0)
-                        if y == side:
-                            return True
                     if solve(board, ids, tiles, x, y, side, tile_size, rotate, flip):
                         return True
                     else:
@@ -136,22 +125,42 @@ def main():
                             break
                     if br:
                         break
-            print(key1, k)
-    res = [1117, 1543, 1213, 1291]
     print(res[0]*res[1]*res[2]*res[3])
     
-    # board[0:tile_size, 0:tile_size] = tiles[res[1]]
-    # board[0:tile_size, (side-1)*tile_size:(side-1)*tile_size+tile_size] = tiles[res[2]]
-    # board[(side-1)*tile_size:(side-1)*tile_size+tile_size, (side-1)*tile_size:(side-1)*tile_size+tile_size] = tiles[res[0]]
-    # board[(side-1)*tile_size:(side-1)*tile_size+tile_size, 0:tile_size] = np.rot90(tiles[res[3]], 1)
-    # ids[0, 0] = res[1]
-    # ids[0, side-1] = res[2]
-    # ids[side-1, side-1] = res[0]
-    # ids[side-1, 0] = res[3]
+    board[0:tile_size, 0:tile_size] = tiles[res[1]]
+    ids[0, 0] = res[1]
 
-    solved = solve(board, ids, tiles, 0, 0, side, tile_size, rotate, flip)
+    solved = solve(board, ids, tiles, 1, 0, side, tile_size, rotate, flip)
     ids = ids.astype(np.uint64)
     print(ids)
+
+    stripped_board = np.zeros((side*(tile_size-2), side*(tile_size-2)))
+    for i in range(side):
+        for j in range(side):
+            stripped_board[i*(tile_size-2):i*(tile_size-2)+(tile_size-2),
+                           j*(tile_size-2):j*(tile_size-2)+(tile_size-2)] = board[i*tile_size+1:i*tile_size+tile_size-1,
+                                                                                  j*tile_size+1:j*tile_size+tile_size-1]
+    board = stripped_board.astype(np.bool)
+
+    raw_monster = '                  # \n#    ##    ##    ###\n #  #  #  #  #  #   '
+    monster = np.array([[0 if char == ' ' else 1 for char in line] for line in raw_monster.split('\n')], dtype=np.bool)
+    ones = int(np.sum(monster))
+    
+    for rot in rotate:
+        for fl in flip:
+            tformed = fl(rot(board))
+            found = 0
+            for i in range(tformed.shape[0]):
+                for j in range(tformed.shape[1]):
+                    area = tformed[i:i+monster.shape[0], j:j+monster.shape[1]]
+                    if area.shape != monster.shape:
+                        continue
+                    if int(np.sum(np.logical_and(area, monster))) == ones:
+                        found += 1
+                        area[:, :] = np.logical_and(area, np.logical_not(monster))
+            if found != 0:
+                print(np.sum(tformed))
+                return
 
 
 if __name__ == '__main__':
