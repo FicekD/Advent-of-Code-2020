@@ -11,7 +11,7 @@ def read_data(path):
 
 def main():
     base_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.join(base_path, 'data', 'day3_data.txt')
+    data_path = os.path.join(base_path, 'data', 'day03_data.txt')
     data = read_data(data_path)
     
     down = 1

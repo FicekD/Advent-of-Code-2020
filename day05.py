@@ -10,7 +10,7 @@ def read_data(path):
 
 def main():
     base_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.join(base_path, 'data', 'day5_data.txt')
+    data_path = os.path.join(base_path, 'data', 'day05_data.txt')
     data = read_data(data_path)
 
     # rows = [int(line[:7].replace('F', '0').replace('B', '1'), 2) for line in data]

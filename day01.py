@@ -10,7 +10,7 @@ def fetch_data(path):
 
 def main():
     base_path = os.path.dirname(os.path.realpath(__file__))
-    data = fetch_data(os.path.join(base_path, 'data', 'day1_data.txt'))
+    data = fetch_data(os.path.join(base_path, 'data', 'day01_data.txt'))
     data.sort()
 
     solution = 2020

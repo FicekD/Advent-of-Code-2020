@@ -32,7 +32,7 @@ def how_many_in(bag, rules):
 
 def main():
     base_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.join(base_path, 'data', 'day7_data.txt')
+    data_path = os.path.join(base_path, 'data', 'day07_data.txt')
     data = read_data(data_path)
 
     rules = dict()

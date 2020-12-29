@@ -10,7 +10,7 @@ def read_data(path):
 
 def main():
     base_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.join(base_path, 'data', 'day6_data.txt')
+    data_path = os.path.join(base_path, 'data', 'day06_data.txt')
     data = read_data(data_path)
     data.append('')
 

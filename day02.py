@@ -11,7 +11,7 @@ def fetch_data(path):
 
 def main():
     base_path = os.path.dirname(os.path.realpath(__file__))
-    data = fetch_data(os.path.join(base_path, 'data', 'day2_data.txt'))
+    data = fetch_data(os.path.join(base_path, 'data', 'day02_data.txt'))
 
     ranges = [(int(line[0].split('-')[0]), int(line[0].split('-')[1])) for line in data]
     letters = [line[1][0] for line in data]
